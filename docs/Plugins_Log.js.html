@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Plugins/Log.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="IdEnveloper.html">IdEnveloper</a><ul class='methods'><li data-type='method'><a href="IdEnveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="IdEnveloper.html#wrap">wrap</a></li></ul></li><li><a href="JsonEncoder.html">JsonEncoder</a><ul class='methods'><li data-type='method'><a href="JsonEncoder.html#decode">decode</a></li><li data-type='method'><a href="JsonEncoder.html#encode">encode</a></li></ul></li><li><a href="LogPlugin.html">LogPlugin</a><ul class='methods'><li data-type='method'><a href="LogPlugin.html#onclose">onclose</a></li><li data-type='method'><a href="LogPlugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="LogPlugin.html#ondata">ondata</a></li><li data-type='method'><a href="LogPlugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="LogPlugin.html#onerror">onerror</a></li><li data-type='method'><a href="LogPlugin.html#onmessage">onmessage</a></li><li data-type='method'><a href="LogPlugin.html#onopen">onopen</a></li><li data-type='method'><a href="LogPlugin.html#onscheduled">onscheduled</a></li></ul></li><li><a href="Socket.html">Socket</a></li></ul><h3>Interfaces</h3><ul><li><a href="Encoder.html">Encoder</a><ul class='methods'><li data-type='method'><a href="Encoder.html#.Implements">Implements</a></li><li data-type='method'><a href="Encoder.html#decode">decode</a></li><li data-type='method'><a href="Encoder.html#encode">encode</a></li></ul></li><li><a href="Enveloper.html">Enveloper</a><ul class='methods'><li data-type='method'><a href="Enveloper.html#.Implements">Implements</a></li><li data-type='method'><a href="Enveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="Enveloper.html#wrap">wrap</a></li></ul></li><li><a href="Plugin.html">Plugin</a><ul class='methods'><li data-type='method'><a href="Plugin.html#onclose">onclose</a></li><li data-type='method'><a href="Plugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="Plugin.html#ondata">ondata</a></li><li data-type='method'><a href="Plugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="Plugin.html#onerror">onerror</a></li><li data-type='method'><a href="Plugin.html#onmessage">onmessage</a></li><li data-type='method'><a href="Plugin.html#onopen">onopen</a></li><li data-type='method'><a href="Plugin.html#onscheduled">onscheduled</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Plugins/Log.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Plugin from './Plugin';
+
+/**
+ * LogPlugin performs console.log() calls for a `Socket`.
+ * 
+ * @class
+ * @implements {Plugin}
+ */
+class LogPlugin extends Plugin {
+    /**
+     * Creates a new `LogPlugin`.
+     */
+    constructor() {
+        super();
+    }
+
+    /**
+     * onclose is called when the WebSocket fires the `onclose` event.
+     * 
+     * @method
+     * @param {object} event The event object.
+     */
+    onclose = event => console.log( "Socket.Log.onclose", event );
+
+    /**
+     * onerror is called when the WebSocket fires the `onerror` event.
+     * 
+     * @method
+     * @param {object} event The event object.
+     */
+    onerror = event => console.log( "Socket.Log.onerror", event );
+
+    /**
+     * onmessage is called when the WebSocket fires the `onmessage` event.
+     * 
+     * @method
+     * @param {object} event The event object.
+     */
+    onmessage = event => console.log( "Socket.Log.onmessage", event );
+
+    /**
+     * onopen is called when the WebSocket fires the `onopen` event.
+     * 
+     * @method
+     * @param {object} event The event object.
+     */
+    onopen = event => console.log( "Socket.Log.onopen", event );
+
+    /**
+     * onconnect is called when the WebSocket fires the `onconnect` event.
+     * 
+     * @method
+     */
+    onconnect = () => console.log( "Socket.Log.onconnect" );
+
+    /**
+     * ondisconnect is called when the WebSocket fires the `ondisconnect` event.
+     * 
+     * @method
+     */
+    ondisconnect = () => console.log( "Socket.Log.ondisconnect" );
+
+    /**
+     * ondata is called when the WebSocket fires the `ondata` event.
+     * 
+     * @method
+     * @param {object} data The data object.
+     */
+    ondata = data => console.log( "Socket.Log.ondata", data );
+
+    /**
+     * onscheduled is called when the WebSocket has failed and a new connection will soon be attempted.
+     * 
+     * @method
+     * @param {number} timeout The time in milliseconds after which the new attempt will be made.
+     */
+    onscheduled = timeout => console.log("Socket.Log.onscheduled", timeout );
+}
+
+export default LogPlugin;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Fri Sep 04 2020 16:33:32 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

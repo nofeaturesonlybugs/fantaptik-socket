@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Envelopers/Id.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="IdEnveloper.html">IdEnveloper</a><ul class='methods'><li data-type='method'><a href="IdEnveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="IdEnveloper.html#wrap">wrap</a></li></ul></li><li><a href="JsonEncoder.html">JsonEncoder</a><ul class='methods'><li data-type='method'><a href="JsonEncoder.html#decode">decode</a></li><li data-type='method'><a href="JsonEncoder.html#encode">encode</a></li></ul></li><li><a href="LogPlugin.html">LogPlugin</a><ul class='methods'><li data-type='method'><a href="LogPlugin.html#onclose">onclose</a></li><li data-type='method'><a href="LogPlugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="LogPlugin.html#ondata">ondata</a></li><li data-type='method'><a href="LogPlugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="LogPlugin.html#onerror">onerror</a></li><li data-type='method'><a href="LogPlugin.html#onmessage">onmessage</a></li><li data-type='method'><a href="LogPlugin.html#onopen">onopen</a></li><li data-type='method'><a href="LogPlugin.html#onscheduled">onscheduled</a></li></ul></li><li><a href="Socket.html">Socket</a></li></ul><h3>Interfaces</h3><ul><li><a href="Encoder.html">Encoder</a><ul class='methods'><li data-type='method'><a href="Encoder.html#.Implements">Implements</a></li><li data-type='method'><a href="Encoder.html#decode">decode</a></li><li data-type='method'><a href="Encoder.html#encode">encode</a></li></ul></li><li><a href="Enveloper.html">Enveloper</a><ul class='methods'><li data-type='method'><a href="Enveloper.html#.Implements">Implements</a></li><li data-type='method'><a href="Enveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="Enveloper.html#wrap">wrap</a></li></ul></li><li><a href="Plugin.html">Plugin</a><ul class='methods'><li data-type='method'><a href="Plugin.html#onclose">onclose</a></li><li data-type='method'><a href="Plugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="Plugin.html#ondata">ondata</a></li><li data-type='method'><a href="Plugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="Plugin.html#onerror">onerror</a></li><li data-type='method'><a href="Plugin.html#onmessage">onmessage</a></li><li data-type='method'><a href="Plugin.html#onopen">onopen</a></li><li data-type='method'><a href="Plugin.html#onscheduled">onscheduled</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Envelopers/Id.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { v4 as uuidv4 } from 'uuid';
+
+import { NoOpEnveloper, Implements } from './common';
+
+/**
+ * @typedef IdEnveloper~Options
+ * @see {IdEnveloper}
+ * @type {object}
+ * @property {string} [id="id"] The `message-id` property.
+ * @property {string} [data="data"] The `message-data` property.
+ * @property {array} [elevate=[]] Array of properties to elevate from `data` into the new object.
+ */
+
+/**
+ * Default options.
+ * 
+ * @ignore
+ */
+const defaultOptions = {
+    id : "id",
+    data : "data",
+    elevate : [],
+};
+
+/**
+ * IdEnveloper repackages data to include a `message-id` appropriate for `Socket` round-trip messages.
+ * 
+ * @class
+ * @implements {Enveloper}
+ */
+class IdEnveloper {
+    /**
+     * Create a new `IdEnveloper` with an optional wrapped `Enveloper`.
+     * 
+     * @param {IdEnveloper~Options} [options] Overrides the default options.
+     * @param {Enveloper} [wrapped=new Enveloper()] An optional `Enveloper` to wrap around.
+     */
+    constructor( options, wrapped ) {
+        this.wrapped = Implements( wrapped ) ? wrapped : NoOpEnveloper;
+        this.options = { ...defaultOptions, ...options };
+        this.options.elevate = Array.isArray( this.options.elevate ) ? this.options.elevate : []; // TODO Will be silent if not an Array
+    }
+    /**
+     * Unwraps an object into a new object.
+     * 
+     * @method
+     * @param {object} [data=null] The data to unwrap.
+     * @returns {object|null}
+     */
+    unwrap = data => {
+        const { wrapped } = this;
+        const { data : dataProp, elevate } = this.options;
+        const rv = data[ dataProp ] ? data[ dataProp ] : {};
+        elevate.map( prop => {
+            if( prop !== dataProp &amp;&amp; data.hasOwnProperty( prop ) ) {
+                rv[ prop ] = data[ prop ];
+            }
+        } );
+        return wrapped.unwrap( rv );
+    }
+
+    /**
+     * Wraps data into a new object.
+     * 
+     * @method
+     * @param {object} [data=null] The data to wrap.
+     * @returns {object|null}
+     */
+    wrap = data => {
+        const { wrapped } = this;
+        const { data : dataProp, id : idProp, elevate } = this.options;
+        data = wrapped.wrap( data );
+        const rv = {
+            [dataProp] : data,
+            [idProp] : uuidv4(),
+        };
+        elevate.map( prop => {
+            if( prop !== dataProp &amp;&amp; data.hasOwnProperty( prop ) ) {
+                rv[ prop ] = data[ prop ];
+            }
+        } );
+        return rv;
+    }
+
+}
+
+export default IdEnveloper;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Fri Sep 04 2020 16:33:32 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

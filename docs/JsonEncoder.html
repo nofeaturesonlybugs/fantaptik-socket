@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>JsonEncoder - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="IdEnveloper.html">IdEnveloper</a><ul class='methods'><li data-type='method'><a href="IdEnveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="IdEnveloper.html#wrap">wrap</a></li></ul></li><li><a href="JsonEncoder.html">JsonEncoder</a><ul class='methods'><li data-type='method'><a href="JsonEncoder.html#decode">decode</a></li><li data-type='method'><a href="JsonEncoder.html#encode">encode</a></li></ul></li><li><a href="LogPlugin.html">LogPlugin</a><ul class='methods'><li data-type='method'><a href="LogPlugin.html#onclose">onclose</a></li><li data-type='method'><a href="LogPlugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="LogPlugin.html#ondata">ondata</a></li><li data-type='method'><a href="LogPlugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="LogPlugin.html#onerror">onerror</a></li><li data-type='method'><a href="LogPlugin.html#onmessage">onmessage</a></li><li data-type='method'><a href="LogPlugin.html#onopen">onopen</a></li><li data-type='method'><a href="LogPlugin.html#onscheduled">onscheduled</a></li></ul></li><li><a href="Socket.html">Socket</a></li></ul><h3>Interfaces</h3><ul><li><a href="Encoder.html">Encoder</a><ul class='methods'><li data-type='method'><a href="Encoder.html#.Implements">Implements</a></li><li data-type='method'><a href="Encoder.html#decode">decode</a></li><li data-type='method'><a href="Encoder.html#encode">encode</a></li></ul></li><li><a href="Enveloper.html">Enveloper</a><ul class='methods'><li data-type='method'><a href="Enveloper.html#.Implements">Implements</a></li><li data-type='method'><a href="Enveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="Enveloper.html#wrap">wrap</a></li></ul></li><li><a href="Plugin.html">Plugin</a><ul class='methods'><li data-type='method'><a href="Plugin.html#onclose">onclose</a></li><li data-type='method'><a href="Plugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="Plugin.html#ondata">ondata</a></li><li data-type='method'><a href="Plugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="Plugin.html#onerror">onerror</a></li><li data-type='method'><a href="Plugin.html#onmessage">onmessage</a></li><li data-type='method'><a href="Plugin.html#onopen">onopen</a></li><li data-type='method'><a href="Plugin.html#onscheduled">onscheduled</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">JsonEncoder</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        JsonEncoder
+        </h2>
+        
+            <div class="class-description usertext"><p>A JSON Encoder for a Socket.</p></div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="JsonEncoder"><span class="type-signature"></span>new JsonEncoder<span class="signature">(wrapped<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Encoders_Json.js.html">Encoders/Json.js</a>, <a href="Encoders_Json.js.html#line15">line 15</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="Encoder.html">Encoder</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Create a new <code>JsonEncoder</code> with an optional wrapped <code>Encoder</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>wrapped</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Encoder.html">Encoder</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>new Encoder()</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>An optional <code>Encoder</code> to wrap around.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="decode"><span class="type-signature"></span>decode<span class="signature">(data<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object|string|null}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Encoders_Json.js.html">Encoders/Json.js</a>, <a href="Encoders_Json.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="Encoder.html#decode">Encoder#decode</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Decodes data received from a <code>Socket</code>.</p>
+<p><code>data</code> is first passed to any wrapped <code>Encoder</code>.  If the resulting value is
+a string then it will be JSON decoded; otherwise it is returned as-is.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>null</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>The data to decode.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="encode"><span class="type-signature"></span>encode<span class="signature">(data)</span><span class="type-signature"> &rarr; {object|string|null}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Encoders_Json.js.html">Encoders/Json.js</a>, <a href="Encoders_Json.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="Encoder.html#encode">Encoder#encode</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Encodes data to send on a <code>Socket</code>.</p>
+<p>If there is no wrapped <code>Encoder</code> then the return value is <code>null</code> or a JSON-encoded string.
+Otherwise the return value depends on the wrapped <code>Encoder</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The data to encode.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Fri Sep 04 2020 16:33:32 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
