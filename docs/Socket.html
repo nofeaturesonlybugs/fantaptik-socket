@@ -167,7 +167,7 @@ records the <code>message-id</code>.  Therefore the configured <code>Enveloper</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line150">line 150</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line178">line 178</a>
     </li></ul></dd>
     
 
@@ -197,6 +197,15 @@ records the <code>message-id</code>.  Therefore the configured <code>Enveloper</
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>{<a href="Socket.html#~Event">Socket~Event</a>}</li>
+        
+            <li>{<a href="Socket.html#~Options">Socket~Options</a>}</li>
+        </ul>
+    </dd>
     
 
     
@@ -330,7 +339,7 @@ records the <code>message-id</code>.  Therefore the configured <code>Enveloper</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line400">line 400</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line431">line 431</a>
     </li></ul></dd>
     
 
@@ -394,7 +403,7 @@ attempting to connect then the call to <code>connect</code> does nothing.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line390">line 390</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line421">line 421</a>
     </li></ul></dd>
     
 
@@ -457,7 +466,7 @@ attempting to connect then the call to <code>connect</code> does nothing.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line501">line 501</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line532">line 532</a>
     </li></ul></dd>
     
 
@@ -525,7 +534,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line529">line 529</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line560">line 560</a>
     </li></ul></dd>
     
 
@@ -588,7 +597,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line475">line 475</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line506">line 506</a>
     </li></ul></dd>
     
 
@@ -651,7 +660,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line538">line 538</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line569">line 569</a>
     </li></ul></dd>
     
 
@@ -721,6 +730,177 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
 
         
                 
+<h4 class="name" id="~Event">Event</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line22">line 22</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>originalEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The original WebSocket event; <code>null</code> for any extended events.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>socket</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Socket.html">Socket</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The <code>Socket</code> instance triggering the event.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>scheduled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The timeout in milliseconds for an <code>onscheduled</code> event; zero for other events.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p><code>Event</code> is the event type sent for <code>Socket</code> events.  If you need the original event use the <code>event.originalEvent</code> property.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
 <h4 class="name" id="~Options">Options</h4>
 
 
@@ -732,7 +912,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line52">line 52</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -1418,7 +1598,7 @@ i.e. when calling <code>Socket.promise()</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line30">line 30</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -1458,7 +1638,7 @@ i.e. when calling <code>Socket.promise()</code>.</p></td>
 
 
 <div class="description usertext">
-    <p>retryProvider returns the next timeout period in milliseconds to wait before attempting
+    <p><code>retryProvider</code> returns the next timeout period in milliseconds to wait before attempting
 to reconnect on disconnection; return values less than zero are set to zero.
 <code>attemptCount</code> is reset to zero on an <code>onopen</code> WebSocket event; use <code>attemptCount === 0</code>
 to reset to an initial state if necessary.</p>
@@ -1593,7 +1773,7 @@ const socketRetryProvider = attemptCount => {
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line8">line 8</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -1633,7 +1813,7 @@ const socketRetryProvider = attemptCount => {
 
 
 <div class="description usertext">
-    <p>uriProvider returns the next websocket URI to attempt; allows client code to rotate
+    <p><code>uriProvider</code> returns the next websocket URI to attempt; allows client code to rotate
 through multiple endpoints.  <code>attemptCount</code> is reset to zero on an <code>onopen</code> WebSocket
 event; use <code>attemptCount === 0</code> to reset to an initial state if necessary.</p>
 </div>
@@ -1769,7 +1949,7 @@ const socketUriProvider = attemptCount => {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Sep 05 2020 15:25:57 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Sep 05 2020 17:26:24 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
