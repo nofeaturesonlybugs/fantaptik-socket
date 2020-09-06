@@ -368,12 +368,7 @@ class Socket {
         // console.log("Socket._attempt().outer.returned");//TODO RM
 
         // TODO Implement Socket.options.reconnect
-        // TODO Implement Socket.options.retryProvider
-        // TODO Implement Socket.options.onconnect
-        // TODO Implement Socket.options.ondisconnect
         // TODO Implement Socket.options.immediate ??? i.e. connect on constructor()...
-        // TODO Implement Socket.connect()
-        // TODO Implement Socket.close()
 
         // Give each plugin a handle to the socket. // TODO Document this behavior.
         // We use setTimeout() to ensure we've left the constructor in case any of
