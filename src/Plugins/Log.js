@@ -51,14 +51,14 @@ class LogPlugin extends Plugin {
      * 
      * @method
      */
-    onconnect = () => console.log( "Socket.Log.onconnect" );
+    onconnect = event => console.log( "Socket.Log.onconnect", event );
 
     /**
      * ondisconnect is called when the WebSocket fires the `ondisconnect` event.
      * 
      * @method
      */
-    ondisconnect = () => console.log( "Socket.Log.ondisconnect" );
+    ondisconnect = event => console.log( "Socket.Log.ondisconnect", event );
 
     /**
      * ondata is called when the WebSocket fires the `ondata` event.
