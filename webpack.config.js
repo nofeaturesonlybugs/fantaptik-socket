@@ -26,20 +26,6 @@ module.exports = {
     },
     module : {
         rules : [
-            // {
-            //     test : /\.css$/,
-            //     use : [ 'style-loader', 'css-loader' ],
-            // },
-            // TODO RM
-            // {
-            //     test : /\.(woff|woff2|eot|ttf|otf)$/,
-            //     use : {
-            //         loader : 'file-loader',
-            //         options : {
-            //             publicPath : fontPath,
-            //         },
-            //     },
-            // },
             {
                 test : /\.js$/,
                 exclude : /[\\/]node_modules[\\/]/,
