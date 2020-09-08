@@ -9,38 +9,6 @@
  */
 export class Plugin {
     /**
-     * onclose is called when the WebSocket fires the `onclose` event.
-     * 
-     * @method
-     * @param {MessageEvent} event The event from the underlying `WebSocket` instance.
-     */
-    onclose = event => null;
-
-    /**
-     * onerror is called when the WebSocket fires the `onerror` event.
-     * 
-     * @method
-     * @param {MessageEvent} event The event from the underlying `WebSocket` instance.
-     */
-    onerror = event => null;
-
-    /**
-     * onmessage is called when the WebSocket fires the `onmessage` event.
-     * 
-     * @method
-     * @param {MessageEvent} event The event from the underlying `WebSocket` instance.
-     */
-    onmessage = event => null;
-
-    /**
-     * onopen is called when the WebSocket fires the `onopen` event.
-     * 
-     * @method
-     * @param {MessageEvent} event The event from the underlying `WebSocket` instance.
-     */
-    onopen = event => null;
-
-    /**
      * onconnect is called when the WebSocket fires the `onconnect` event.
      * 
      * @method

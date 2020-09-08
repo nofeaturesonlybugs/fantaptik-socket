@@ -15,38 +15,6 @@ class LogPlugin extends Plugin {
     }
 
     /**
-     * onclose is called when the WebSocket fires the `onclose` event.
-     * 
-     * @method
-     * @param {MessageEvent} event The event from the underlying `WebSocket` instance.
-     */
-    onclose = event => console.log( "Socket.Log.onclose", event );
-
-    /**
-     * onerror is called when the WebSocket fires the `onerror` event.
-     * 
-     * @method
-     * @param {MessageEvent} event The event from the underlying `WebSocket` instance.
-     */
-    onerror = event => console.log( "Socket.Log.onerror", event );
-
-    /**
-     * onmessage is called when the WebSocket fires the `onmessage` event.
-     * 
-     * @method
-     * @param {MessageEvent} event The event from the underlying `WebSocket` instance.
-     */
-    onmessage = event => console.log( "Socket.Log.onmessage", event );
-
-    /**
-     * onopen is called when the WebSocket fires the `onopen` event.
-     * 
-     * @method
-     * @param {MessageEvent} event The event from the underlying `WebSocket` instance.
-     */
-    onopen = event => console.log( "Socket.Log.onopen", event );
-
-    /**
      * onconnect is called when the WebSocket fires the `onconnect` event.
      * 
      * @method
