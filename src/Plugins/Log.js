@@ -36,7 +36,7 @@ class LogPlugin extends Plugin {
      * @method
      * @param {Socket~Event} event The extended event type from this package.
      */
-    ondata = data => console.log( "Socket.Log.ondata", event );
+    ondata = event => console.log( "Socket.Log.ondata", event );
 
     /**
      * onscheduled is called when the WebSocket has failed and a new connection will soon be attempted.
@@ -44,7 +44,7 @@ class LogPlugin extends Plugin {
      * @method
      * @param {Socket~Event} event The extended event type from this package.
      */
-    onscheduled = timeout => console.log("Socket.Log.onscheduled", event );
+    onscheduled = event => console.log("Socket.Log.onscheduled", event );
 }
 
 export default LogPlugin;
