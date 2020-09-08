@@ -98,11 +98,6 @@ const deleteSocket = socket => {
  * @property {Encoder} [encoder=new JsonEncoder()] A message encoder and decoder.
  * @property {Enveloper} [enveloper= data => data] A message enveloper.
  * @property {Plugin[]} [plugins=[]] An array of plugins.
-// TODO RM
-//  * @property {func} [onclose] Raw event handler for `socket.onclose`
-//  * @property {func} [onerror] Raw event handler for `socket.onerror`
-//  * @property {func} [onmessage] Raw event handler for `socket.onmessage`
-//  * @property {func} [onopen] Raw event handler for `socket.onopen`
  * @property {func} [onconnect] Extended event handler for when socket is connected and ready.
  * @property {func} [ondisconnect] Extended event handler for when a socket disconnects.
  * @property {func} [ondata] Extended event handler for data that has been decoded via `encoder` and unpackaged via `enveloper`.
@@ -134,15 +129,12 @@ const SocketOptions = {
  * by the endpoint.  
  * 
  * > *Extended Events*  
- * >> The client application can set event handlers for the raw WebSocket events: `onclose`, `onerror`, `onmessage`, and `onopen`.
- * When set these handlers will be called before the `Socket` implements any of its own internal logic to allow the client
- * application a chance to change properties on the `Socket`.  
- * >> However most client applications are only interested in knowing when a socket is usable, when a socket has disconnected, and
- * when data arrives on the socket.  The following events support those notifications: `onconnect`, `ondisconnect`, and `ondata`.  
- * >>> **onconnect** - Fires after `onopen` and can be used to send messages that should not be buffered; also fires after a successful reconnect.  
- * >>> **ondisconnect** - Fires after either `onclose` or `onerorr` and indicates the socket has gone away and may start reconnecting if configured to do so.  
- * >>> **ondata** - Fires after `onmessage` as well as any `Encoder` and `Enveloper` logic.  
- * >>> **onscheduled** - Fires when a connection attempt has been scheduled.  
+ * >> The `Socket` class eschews the standard `WebSocket` events in favor of a set of higher level events:
+ * >>> **onconnect** - Triggered when the `Socket` has successfully connected to the server.  
+ * >>> **ondisconnect** - Triggered when the `Socket` has lost the connection due to either `onerror` or `onclose` and is debounced
+ * >>> in the circumstance that both events are trigerred by the underlying `WebSocket` instance.  
+ * >>> **ondata** - Triggered when data arrives on the socket; the delivered data will have already been processed by encoder(s) and enveloper(s).  
+ * >>> **onscheduled** - Triggered after `ondisconnect` when the socket has the `reconnect` option set to `true`.  
  * 
  * > *Plugins*
  * >> Any number of plugins can be provided when creating a `Socket` instance.  The implemented `Plugin` methods are called as if they were
@@ -190,7 +182,7 @@ class Socket {
      * @param {Socket~Options} [options] Overrides the default options.
      */
     constructor( options ) {
-        // console.log("socket()",options);//TODO RM
+        console.log("socket()",options);//TODO RM
         this.options = {
             ...SocketOptions,
             ...options,
@@ -199,7 +191,6 @@ class Socket {
 
         this.props = {
             // No current connection attempts.
-            attempting : false,
             attemptTimeout : 0,
             attempts : 0,
 
@@ -227,77 +218,12 @@ class Socket {
         } );
         EVENTS_ALL.map( name => typeof this.options[ name ] === "function" ? this.props.events.register( name, e => this.options[ name ]( e ) ) : null );
 
-        /**
-         * makeGoneHandler creates onclose & onerror handlers that are mostly identical and can optionally
-         * make handlers that start the reconnect cycle.  "Gone" implies the current socket is dead and no
-         * longer usable.
-         * 
-         * @param {string} eventName The event name: onclose, onerror
-         * @param {bool} reconnecting True if this is a reconnecting event.
-         */
-        const makeGoneHandler = ( name, reconnecting ) => {
-            const fn = event => {
-                this.funcs.ondisconnect();                      // Call the `ondisconnect` handler created during `onopen`.
-                deleteSocket( this.props.socket );              // This kills the crab.
-                this.props.socket = null;
-                if( reconnecting === true ) {                   // Attempt to reconnect.
-                        console.log("Socket.reconnecting");//TODO RM
-                        this.funcs.scheduleConnect();
-                }
-            };
-            return fn;
-        }
-
         // Private scoping some functions.
         this.funcs = {
             /**
-             * scheduleConnect sets a timeout that will attempt to connect.
+             * `onmessage` is called when the Websocket receives data.  The event.data is decoded and unwrapped before sending to 
+             * event handlers and Plugins.
              */
-            scheduleConnect : () => {
-                // Can't have a timeout already set and can not be attempting.
-                if( this.props.attemptTimeout === 0 && this.props.attempting === false ) {
-                    this.props.attempts += 1;                                                   // Increment our attempt counter.
-                    const retryTimeout = this.options.retryProvider( this.props.attempts );     // Get the timeout from the provider.
-                    console.log("Socket.schedule-reconnect",retryTimeout);//TODO RM
-                    this.props.attemptTimeout = setTimeout( () => {                             // Schedule our reconnect.
-                        console.log("Socket.attempt-reconnect");//TODO RM
-                        this.props.attemptTimeout = 0;                                          // Reset attempt timeout to 0.
-                        this.connect();
-                    }, retryTimeout );
-                    this.props.events.trigger( EVENT_SCHEDULED, retryTimeout ); // TODO Change retryTimeout to Socket~Event type.
-                }
-            },
-
-            /**
-             * onclose handles the WebSocket onclose event; it is only called on a WebSocket whose onopen()
-             * event has also fired.
-             */
-            onclose : makeGoneHandler( "onclose", false ),
-
-            /**
-             * oncloseReconnect is the onclose event that also schedules a reconnect; it is only called on a WebSocket
-             * whose onopen() event has also fired.
-             */
-            oncloseReconnect : makeGoneHandler( "onclose", true ),
-
-            /**
-             * onerror handles the WebSocket onerror event; it is only called on a WebSocket whose onopen()
-             * event has also fired.
-             */
-            onerror : makeGoneHandler( "onerror", false ),
-
-            /**
-             * onerrorReconnect is the onerror event that also schedules a reconnect; it is only called on a WebSocket
-             * whose onopen() event has also fired.
-             */
-            onerrorReconnect : makeGoneHandler( "onerror", true ),
-
-            /**
-             * ondisconnect is called during onclose or onerror after a successful onopen; it is set to a function
-             * during the onopen handler.
-             */
-            ondisconnect : () => null,
-
             onmessage : event => {
                 const { encoder, enveloper, messageId } = this.options;
                 const { promises } = this.props;
@@ -332,7 +258,7 @@ class Socket {
                     let wrapped = enveloper.wrap( data );
                     let encoded = encoder.encode( wrapped );
                     let rv = custom ? custom( wrapped, encoded ) : null;
-                    if( socket ) {
+                    if( socket && socket.readyState === WebSocket.OPEN ) {
                         socket.send( encoded );
                     } else if( buffer === true ) {
                         pending.push( encoded );
@@ -342,14 +268,6 @@ class Socket {
                 return null;
             },
         };
-
-        // Make a connection attempt. // TODO configurable
-        // console.log("Socket._attempt().outer");//TODO RM
-        // this.connect(); // TODO
-        // console.log("Socket._attempt().outer.returned");//TODO RM
-
-        // TODO Implement Socket.options.reconnect
-        // TODO Implement Socket.options.immediate ??? i.e. connect on constructor()...
 
         // Give each plugin a handle to the socket. // TODO Document this behavior.
         // We use setTimeout() to ensure we've left the constructor in case any of
@@ -372,44 +290,63 @@ class Socket {
     }
 
     /**
-     * `connect` causes the `Socket` to make a connection attempt.  If the socket is already connected or already
-     * attempting to connect then the call to `connect` does nothing.
+     * `connect` causes the `Socket` to make a connection attempt.  Calls to connect() are debounced in such a way that there is
+     * only ever a single instance of `WebSocket` internally.
      */
     connect = () => {
-        let { attempting, attemptTimeout, socket } = this.props;
-        if( attempting === false && attemptTimeout === 0 && socket === null ) {     // Not attempting, no schedule attempt, & no socket.
-            this.props.attempting = true;                                                       // Attempting is now true.
+        // schedule will schedule another call to connect if necessary.
+        const schedule = () => {
+            const { options : { reconnect }, props : { attemptTimeout, stopped, socket } } = this;
+            console.log(MODULE_NAME+"/Socket.schedule",`reconnect.${reconnect} attemptTimeout.${attemptTimeout} stopped.${stopped}`); // TODO RM
+            // Can not already have a timeout and can not have a socket; reconnect must be true and stopped can not have been called.
+            if( attemptTimeout === 0 && socket === null && reconnect === true && stopped === false ) {
+                this.props.attempts += 1;                                                   // Increment our attempt counter.
+                let retryTimeout = this.options.retryProvider( this.props.attempts );       // Get the timeout from the provider.
+                retryTimeout = typeof retryTimeout === "number" ? retryTimeout : 0;
+                console.log("Socket.schedule-reconnect",retryTimeout);//TODO RM
+                this.props.attemptTimeout = setTimeout( () => {                             // Schedule our reconnect.
+                    console.log("Socket.attempt-reconnect");//TODO RM
+                    this.props.attemptTimeout = 0;                                          // Reset attempt timeout to 0.
+                    this.connect();
+                }, retryTimeout );
+                this.props.events.trigger( EVENT_SCHEDULED, retryTimeout ); // TODO Change retryTimeout to Socket~Event type.
+            } else {
+                console.log( MODULE_NAME + "/Socket.skipped-reschedule");//TODO RM
+            }
+        };
+        // gone is called on `onclose` or `onerror`.
+        const gone = () => {
+            console.log(MODULE_NAME+"/Socket.gone",this);//TODO RM
+            const { socket } = this.props;
+            if( socket ) {
+                delete socket.onclose;
+                delete socket.onerror;
+                delete socket.onopen;
+                delete socket.onmessage;
+                this.props.socket = null;
+                this.props.events.trigger( EVENT_DISCONNECT, null ); // TODO Replace `null` with Socket~Event.
+                schedule();
+            }
+        };
+        //
+        // Our regular connect logic.
+        let { attemptTimeout, socket } = this.props;
+        if( attemptTimeout === 0 && socket === null ) {                                         // No scheduled attempt, & no socket.
             this.props.stopped = false;                                                         // No longer stopped.
             //
-            socket = new WebSocket( this.options.uriProvider( this.props.attempts ) );      // Create underlying WebSocket instance.
+            socket = new WebSocket( this.options.uriProvider( this.props.attempts ) );          // Create underlying WebSocket instance.
+            this.props.socket = socket;                                                         // Remember our socket.
             socket.onmessage = this.funcs.onmessage;                                            // Set message handler so nothing is missed.
             //
-            const failed = () => {                  // `failed` is called for both onclose and onerror.
-                this.props.attempting = false;      // Attempt has failed.
-                deleteSocket( socket );             // Clean up WebSocket instance.
-                // N.B:  If the connection attempt fails onerror should invoke before onclose and failed()
-                // will be called twice.  this.funcs.scheduleConnect() debounces itself so it's not an issue.
-                this.funcs.scheduleConnect();       // Schedule a reconnect attempt.
-            }
-            socket.onclose = () => failed();
-            socket.onerror = () => failed();
+            socket.onclose = gone;
+            socket.onerror = gone;
             socket.onopen = event => {
-                this.props.socket = socket;                                 // Remember our socket.
-                this.props.attempting = false;                              // Attempting is now false.
                 this.props.attempts = 0;                                    // Reset our attempt counter.
                 this.options.retryProvider( 0 );                            // Reset providers by calling with attempts=0
                 this.options.uriProvider( 0 );
                 if( this.props.stopped === true ) {                         // stop() was called after connect() but before 
                     this.stop();                                            // the connection was completed.
                 } else {
-                    socket.onclose = this.funcs.oncloseReconnect;               // Set reconnecting onclose and onerror handlers.
-                    socket.onerror = this.funcs.onerrorReconnect;
-                    this.funcs.ondisconnect = () => {                           // Create our ondisconnect handler that also debounces itself.
-                                                                                // It can only be called once per successful connection.
-                        this.props.events.trigger( EVENT_DISCONNECT, null );    // TODO Replace `null` with Socket~Event type.
-                        this.funcs.ondisconnect = () => null;                   // Replace `ondisconnect` with a no-op function to debounce.
-                    }
-                    //
                     this.props.events.trigger( EVENT_CONNECT, event );          // TODO Replace with Socket~Event type.
                     //
                     while( this.props.pending.length > 0 ) {                    // Send pending messages if any.
@@ -427,9 +364,7 @@ class Socket {
         const { attemptTimeout, socket } = this.props;
         this.props.stopped = true;                                  // Set `stopped` to true before the actual close to give plugins a chance to
                                                                     // check the property in their `onclose` and `onerror` methods.
-        if( socket ) {
-            this.props.socket.onclose = this.funcs.onclose;         // Switch our event handlers to the non-reconnecting ones.
-            this.props.socket.onerror = this.funcs.onerror;
+        if( socket && socket.readyState === WebSocket.OPEN ) {
             this.props.socket.close();                              // Close the socket.
         } else if( attemptTimeout !== 0 ) {                         // A connect attempt is currently scheduled.
             clearTimeout( attemptTimeout );                         // Cancel the scheduled attempt.
