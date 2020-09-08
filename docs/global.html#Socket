@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="IdEnveloper.html">IdEnveloper</a><ul class='methods'><li data-type='method'><a href="IdEnveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="IdEnveloper.html#wrap">wrap</a></li></ul></li><li><a href="JsonEncoder.html">JsonEncoder</a><ul class='methods'><li data-type='method'><a href="JsonEncoder.html#decode">decode</a></li><li data-type='method'><a href="JsonEncoder.html#encode">encode</a></li></ul></li><li><a href="LogPlugin.html">LogPlugin</a><ul class='methods'><li data-type='method'><a href="LogPlugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="LogPlugin.html#ondata">ondata</a></li><li data-type='method'><a href="LogPlugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="LogPlugin.html#onscheduled">onscheduled</a></li></ul></li><li><a href="Socket.html">Socket</a></li></ul><h3>Interfaces</h3><ul><li><a href="Encoder.html">Encoder</a><ul class='methods'><li data-type='method'><a href="Encoder.html#.Implements">Implements</a></li><li data-type='method'><a href="Encoder.html#decode">decode</a></li><li data-type='method'><a href="Encoder.html#encode">encode</a></li></ul></li><li><a href="Enveloper.html">Enveloper</a><ul class='methods'><li data-type='method'><a href="Enveloper.html#.Implements">Implements</a></li><li data-type='method'><a href="Enveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="Enveloper.html#wrap">wrap</a></li></ul></li><li><a href="Plugin.html">Plugin</a><ul class='methods'><li data-type='method'><a href="Plugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="Plugin.html#ondata">ondata</a></li><li data-type='method'><a href="Plugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="Plugin.html#onscheduled">onscheduled</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="IdEnveloper.html">IdEnveloper</a><ul class='methods'><li data-type='method'><a href="IdEnveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="IdEnveloper.html#wrap">wrap</a></li></ul></li><li><a href="JsonEncoder.html">JsonEncoder</a><ul class='methods'><li data-type='method'><a href="JsonEncoder.html#decode">decode</a></li><li data-type='method'><a href="JsonEncoder.html#encode">encode</a></li></ul></li><li><a href="LogPlugin.html">LogPlugin</a><ul class='methods'><li data-type='method'><a href="LogPlugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="LogPlugin.html#ondata">ondata</a></li><li data-type='method'><a href="LogPlugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="LogPlugin.html#onscheduled">onscheduled</a></li></ul></li><li><a href="global.html#Socket">Socket</a></li></ul><h3>Interfaces</h3><ul><li><a href="Encoder.html">Encoder</a><ul class='methods'><li data-type='method'><a href="Encoder.html#.Implements">Implements</a></li><li data-type='method'><a href="Encoder.html#decode">decode</a></li><li data-type='method'><a href="Encoder.html#encode">encode</a></li></ul></li><li><a href="Enveloper.html">Enveloper</a><ul class='methods'><li data-type='method'><a href="Enveloper.html#.Implements">Implements</a></li><li data-type='method'><a href="Enveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="Enveloper.html#wrap">wrap</a></li></ul></li><li><a href="Plugin.html">Plugin</a><ul class='methods'><li data-type='method'><a href="Plugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="Plugin.html#ondata">ondata</a></li><li data-type='method'><a href="Plugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="Plugin.html#onscheduled">onscheduled</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -198,9 +198,9 @@ records the <code>message-id</code>.  Therefore the configured <code>Enveloper</
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>{<a href="Socket.html#~Event">Socket~Event</a>}</li>
+            <li>{<a href="global.html#Socket#~Event">Socket~Event</a>}</li>
         
-            <li>{<a href="Socket.html#~Options">Socket~Options</a>}</li>
+            <li>{<a href="global.html#Socket#~Options">Socket~Options</a>}</li>
         </ul>
     </dd>
     
@@ -259,7 +259,7 @@ records the <code>message-id</code>.  Therefore the configured <code>Enveloper</
             <td class="type">
             
                 
-<span class="param-type"><a href="Socket.html#~Options">Socket~Options</a></span>
+<span class="param-type"><a href="global.html#Socket#~Options">Socket~Options</a></span>
 
 
             
@@ -336,7 +336,7 @@ records the <code>message-id</code>.  Therefore the configured <code>Enveloper</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line276">line 276</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line281">line 281</a>
     </li></ul></dd>
     
 
@@ -400,7 +400,7 @@ only ever a single instance of <code>WebSocket</code> internally.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line264">line 264</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line269">line 269</a>
     </li></ul></dd>
     
 
@@ -463,7 +463,7 @@ only ever a single instance of <code>WebSocket</code> internally.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line361">line 361</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line373">line 373</a>
     </li></ul></dd>
     
 
@@ -531,7 +531,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line387">line 387</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line401">line 401</a>
     </li></ul></dd>
     
 
@@ -594,7 +594,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line337">line 337</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line348">line 348</a>
     </li></ul></dd>
     
 
@@ -657,7 +657,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line396">line 396</a>
+        <a href="Socket.js.html">Socket.js</a>, <a href="Socket.js.html#line410">line 410</a>
     </li></ul></dd>
     
 
@@ -807,7 +807,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
             <td class="type">
             
                 
-<span class="param-type"><a href="Socket.html">Socket</a></span>
+<span class="param-type"><a href="global.html#Socket">Socket</a></span>
 
 
             
@@ -943,7 +943,7 @@ to the Promise's resolver.  <code>onmessage</code> will be called if configured.
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>{<a href="Socket.html">Socket</a>}</li>
+            <li>{<a href="global.html#Socket">Socket</a>}</li>
         </ul>
     </dd>
     
@@ -1101,7 +1101,7 @@ i.e. when calling <code>Socket.promise()</code>.</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="Socket.html#~retryProvider">Socket~retryProvider</a></span>
+<span class="param-type"><a href="global.html#Socket#~retryProvider">Socket~retryProvider</a></span>
 
 
             
@@ -1138,7 +1138,7 @@ i.e. when calling <code>Socket.promise()</code>.</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="Socket.html#~uriProvider">Socket~uriProvider</a></span>
+<span class="param-type"><a href="global.html#Socket#~uriProvider">Socket~uriProvider</a></span>
 
 
             
@@ -1806,7 +1806,7 @@ const socketUriProvider = attemptCount => {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Tue Sep 08 2020 14:27:11 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Tue Sep 08 2020 13:07:10 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="IdEnveloper.html">IdEnveloper</a><ul class='methods'><li data-type='method'><a href="IdEnveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="IdEnveloper.html#wrap">wrap</a></li></ul></li><li><a href="JsonEncoder.html">JsonEncoder</a><ul class='methods'><li data-type='method'><a href="JsonEncoder.html#decode">decode</a></li><li data-type='method'><a href="JsonEncoder.html#encode">encode</a></li></ul></li><li><a href="LogPlugin.html">LogPlugin</a><ul class='methods'><li data-type='method'><a href="LogPlugin.html#onclose">onclose</a></li><li data-type='method'><a href="LogPlugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="LogPlugin.html#ondata">ondata</a></li><li data-type='method'><a href="LogPlugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="LogPlugin.html#onerror">onerror</a></li><li data-type='method'><a href="LogPlugin.html#onmessage">onmessage</a></li><li data-type='method'><a href="LogPlugin.html#onopen">onopen</a></li><li data-type='method'><a href="LogPlugin.html#onscheduled">onscheduled</a></li></ul></li><li><a href="Socket.html">Socket</a></li></ul><h3>Interfaces</h3><ul><li><a href="Encoder.html">Encoder</a><ul class='methods'><li data-type='method'><a href="Encoder.html#.Implements">Implements</a></li><li data-type='method'><a href="Encoder.html#decode">decode</a></li><li data-type='method'><a href="Encoder.html#encode">encode</a></li></ul></li><li><a href="Enveloper.html">Enveloper</a><ul class='methods'><li data-type='method'><a href="Enveloper.html#.Implements">Implements</a></li><li data-type='method'><a href="Enveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="Enveloper.html#wrap">wrap</a></li></ul></li><li><a href="Plugin.html">Plugin</a><ul class='methods'><li data-type='method'><a href="Plugin.html#onclose">onclose</a></li><li data-type='method'><a href="Plugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="Plugin.html#ondata">ondata</a></li><li data-type='method'><a href="Plugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="Plugin.html#onerror">onerror</a></li><li data-type='method'><a href="Plugin.html#onmessage">onmessage</a></li><li data-type='method'><a href="Plugin.html#onopen">onopen</a></li><li data-type='method'><a href="Plugin.html#onscheduled">onscheduled</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="IdEnveloper.html">IdEnveloper</a><ul class='methods'><li data-type='method'><a href="IdEnveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="IdEnveloper.html#wrap">wrap</a></li></ul></li><li><a href="JsonEncoder.html">JsonEncoder</a><ul class='methods'><li data-type='method'><a href="JsonEncoder.html#decode">decode</a></li><li data-type='method'><a href="JsonEncoder.html#encode">encode</a></li></ul></li><li><a href="LogPlugin.html">LogPlugin</a><ul class='methods'><li data-type='method'><a href="LogPlugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="LogPlugin.html#ondata">ondata</a></li><li data-type='method'><a href="LogPlugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="LogPlugin.html#onscheduled">onscheduled</a></li></ul></li><li><a href="Socket.html">Socket</a></li></ul><h3>Interfaces</h3><ul><li><a href="Encoder.html">Encoder</a><ul class='methods'><li data-type='method'><a href="Encoder.html#.Implements">Implements</a></li><li data-type='method'><a href="Encoder.html#decode">decode</a></li><li data-type='method'><a href="Encoder.html#encode">encode</a></li></ul></li><li><a href="Enveloper.html">Enveloper</a><ul class='methods'><li data-type='method'><a href="Enveloper.html#.Implements">Implements</a></li><li data-type='method'><a href="Enveloper.html#unwrap">unwrap</a></li><li data-type='method'><a href="Enveloper.html#wrap">wrap</a></li></ul></li><li><a href="Plugin.html">Plugin</a><ul class='methods'><li data-type='method'><a href="Plugin.html#onconnect">onconnect</a></li><li data-type='method'><a href="Plugin.html#ondata">ondata</a></li><li data-type='method'><a href="Plugin.html#ondisconnect">ondisconnect</a></li><li data-type='method'><a href="Plugin.html#onscheduled">onscheduled</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -43,73 +43,56 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Plugin is the interface for a `Socket` plugin.
+ * Plugin is the interface for a `Socket` plugin.  
+ * 
+ * A `Plugin` does not have to implement the entire interface.  When an interface method is implemented
+ * the `Socket` instance will call the `Plugin` method at the appropriate time of its lifecycle and activity.  
+ * 
+ * Plugins need to support a `Socket` property that will be assigned the instantiated `Socket` they are attached to.  
  * 
  * @class
  * @interface
  */
 export class Plugin {
     /**
-     * onclose is called when the WebSocket fires the `onclose` event.
+     * `Socket` is the `Socket` instance attached to the plugin; it is not available in the `Plugin`'s constructor but
+     * is available in the other methods.  
      * 
-     * @method
-     * @param {object} event The event object.
+     * @property {Socket}
+     * @name Plugin#Socket
      */
-    onclose = event => null;
-
-    /**
-     * onerror is called when the WebSocket fires the `onerror` event.
-     * 
-     * @method
-     * @param {object} event The event object.
-     */
-    onerror = event => null;
-
-    /**
-     * onmessage is called when the WebSocket fires the `onmessage` event.
-     * 
-     * @method
-     * @param {object} event The event object.
-     */
-    onmessage = event => null;
-
-    /**
-     * onopen is called when the WebSocket fires the `onopen` event.
-     * 
-     * @method
-     * @param {object} event The event object.
-     */
-    onopen = event => null;
 
     /**
      * onconnect is called when the WebSocket fires the `onconnect` event.
      * 
      * @method
+     * @param {Socket~Event} event The extended event type from this package.
      */
-    onconnect = () => null;
+    onconnect = event => null;
 
     /**
      * ondisconnect is called when the WebSocket fires the `ondisconnect` event.
      * 
      * @method
+     * @param {Socket~Event} event The extended event type from this package.
      */
-    ondisconnect = () => null;
+    ondisconnect = event => null;
 
     /**
      * ondata is called when the WebSocket fires the `ondata` event.
      * 
      * @method
-     * @param {object} data The data object.
+     * @param {Socket~Event} event The extended event type from this package.
      */
-    ondata = data => null;
+    ondata = event => null;
 
     /**
      * onscheduled is called when the WebSocket has failed and a new connection will soon be attempted.
      * 
      * @method
-     * @param {number} timeout The time in milliseconds after which the new attempt will be made.
+     * @param {Socket~Event} event The extended event type from this package.
      */
-    onscheduled = timeout => null;
+    onscheduled = event => null;
 
 }
 
@@ -127,7 +110,7 @@ export default Plugin;</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Sep 05 2020 17:26:23 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Tue Sep 08 2020 14:27:11 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
