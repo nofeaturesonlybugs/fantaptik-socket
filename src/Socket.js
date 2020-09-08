@@ -17,22 +17,7 @@ const EVENT_SCHEDULED     = 'onscheduled';
 const EVENTS_ALL = [ EVENT_CONNECT, EVENT_DATA, EVENT_DISCONNECT, EVENT_SCHEDULED ];
 
 /**
- * We delete members of the WebSocket in a few places so a small function here.
- * 
- * @ignore
- * @param {WebSocket} socket The socket to delete handlers on.
- */
-const deleteSocket = socket => {
-    if( socket ) {
-        delete socket.onclose;
-        delete socket.onerror;
-        delete socket.message;
-        delete socket.onopen;
-    }
-}
-
-/**
- * `Event` is the event type sent for `Socket` events.  If you need the original event use the `event.originalEvent` property.
+ * `Event` is the event type sent for `Socket` events.
  * 
  * @typedef Socket~Event
  * @type {Object}
@@ -103,7 +88,6 @@ const deleteSocket = socket => {
  * @property {func} [ondata] Extended event handler for data that has been decoded via `encoder` and unpackaged via `enveloper`.
  * @property {func} [onscheduled] Extended event handler for when a connection attempt has been scheduled.
  */
-
 const SocketOptions = {
     buffer : true,
     encoder : new Encoder.Json(),
@@ -139,6 +123,7 @@ const SocketOptions = {
  * > *Plugins*
  * >> Any number of plugins can be provided when creating a `Socket` instance.  The implemented `Plugin` methods are called as if they were
  * event handlers during the `Socket` instance's lifecycle and activity.  
+ * >> Every plugin will have a `Socket` property set to the `Socket` instance.
  * 
  * > *Promises*  
  * >> `Socket.promise( message )` returns a `Promise` that is resolved when a message with the same `message-id` is
@@ -182,7 +167,7 @@ class Socket {
      * @param {Socket~Options} [options] Overrides the default options.
      */
     constructor( options ) {
-        console.log("socket()",options);//TODO RM
+        options = options || {};
         this.options = {
             ...SocketOptions,
             ...options,
@@ -227,19 +212,15 @@ class Socket {
             onmessage : event => {
                 const { encoder, enveloper, messageId } = this.options;
                 const { promises } = this.props;
-                // console.log("Socket.funcs.onmessage.promises",promises);//TODO RM
                 let decoded = encoder.decode( event.data );
                 let unwrapped = enveloper.unwrap( decoded );
                 //
-                if( decoded[ messageId ] && promises[ decoded[ messageId ] ] ) {
-                    // console.log("Socket.onmessage.matching-promise",unwrapped);//TODO RM
-                    // decoded has the messageId value and we have a matching promise.
-                    let promise = promises[ decoded[ messageId ] ];
+                if( decoded[ messageId ] && promises[ decoded[ messageId ] ] ) {        // Look for `message-id` within promises.
+                    let promise = promises[ decoded[ messageId ] ];                     // Remove and resolve the found Promise.
                     delete promises[ decoded[ messageId ] ];
                     promise.resolve( unwrapped );
                 } else {
-                    // console.log("Socket.onmessage.no-matching-promise",unwrapped);//TODO RM
-                    this.props.events.trigger( EVENT_DATA, unwrapped ); // TODO
+                    this.props.events.trigger( EVENT_DATA, unwrapped ); // TODO Replace unwrapped with a Socket~Event.
                 }
             },
 
@@ -269,11 +250,10 @@ class Socket {
             },
         };
 
-        // Give each plugin a handle to the socket. // TODO Document this behavior.
+        // Give each plugin a handle to the socket.
         // We use setTimeout() to ensure we've left the constructor in case any of
         // the plugins need to call methods on the `Socket` instance.
         setTimeout( () => {
-            // console.log("Socket.Socket().set-plugins");//TODO RM
             this.options.plugins.map( plugin => plugin.Socket = this );
         }, 0 );
     }
@@ -297,26 +277,20 @@ class Socket {
         // schedule will schedule another call to connect if necessary.
         const schedule = () => {
             const { options : { reconnect }, props : { attemptTimeout, stopped, socket } } = this;
-            console.log(MODULE_NAME+"/Socket.schedule",`reconnect.${reconnect} attemptTimeout.${attemptTimeout} stopped.${stopped}`); // TODO RM
             // Can not already have a timeout and can not have a socket; reconnect must be true and stopped can not have been called.
             if( attemptTimeout === 0 && socket === null && reconnect === true && stopped === false ) {
                 this.props.attempts += 1;                                                   // Increment our attempt counter.
                 let retryTimeout = this.options.retryProvider( this.props.attempts );       // Get the timeout from the provider.
-                retryTimeout = typeof retryTimeout === "number" ? retryTimeout : 0;
-                console.log("Socket.schedule-reconnect",retryTimeout);//TODO RM
+                retryTimeout = typeof retryTimeout === "number" ? retryTimeout : 0;         // retryTimeout must be a number.
                 this.props.attemptTimeout = setTimeout( () => {                             // Schedule our reconnect.
-                    console.log("Socket.attempt-reconnect");//TODO RM
                     this.props.attemptTimeout = 0;                                          // Reset attempt timeout to 0.
                     this.connect();
                 }, retryTimeout );
                 this.props.events.trigger( EVENT_SCHEDULED, retryTimeout ); // TODO Change retryTimeout to Socket~Event type.
-            } else {
-                console.log( MODULE_NAME + "/Socket.skipped-reschedule");//TODO RM
             }
         };
         // gone is called on `onclose` or `onerror`.
         const gone = () => {
-            console.log(MODULE_NAME+"/Socket.gone",this);//TODO RM
             const { socket } = this.props;
             if( socket ) {
                 delete socket.onclose;
@@ -331,12 +305,12 @@ class Socket {
         //
         // Our regular connect logic.
         let { attemptTimeout, socket } = this.props;
-        if( attemptTimeout === 0 && socket === null ) {                                         // No scheduled attempt, & no socket.
-            this.props.stopped = false;                                                         // No longer stopped.
+        if( attemptTimeout === 0 && socket === null ) {                     // No scheduled attempt, & no socket.
+            this.props.stopped = false;                                     // No longer stopped.
             //
             socket = new WebSocket( this.options.uriProvider( this.props.attempts ) );          // Create underlying WebSocket instance.
-            this.props.socket = socket;                                                         // Remember our socket.
-            socket.onmessage = this.funcs.onmessage;                                            // Set message handler so nothing is missed.
+            this.props.socket = socket;                                     // Remember our socket.
+            socket.onmessage = this.funcs.onmessage;                        // Set message handler so nothing is missed.
             //
             socket.onclose = gone;
             socket.onerror = gone;
@@ -347,9 +321,9 @@ class Socket {
                 if( this.props.stopped === true ) {                         // stop() was called after connect() but before 
                     this.stop();                                            // the connection was completed.
                 } else {
-                    this.props.events.trigger( EVENT_CONNECT, event );          // TODO Replace with Socket~Event type.
+                    this.props.events.trigger( EVENT_CONNECT, event );      // TODO Replace with Socket~Event type.
                     //
-                    while( this.props.pending.length > 0 ) {                    // Send pending messages if any.
+                    while( this.props.pending.length > 0 ) {                // Send pending messages if any.
                         socket.send( this.props.pending.shift() );
                     }
                 }
@@ -362,8 +336,7 @@ class Socket {
      */
     stop = () => {
         const { attemptTimeout, socket } = this.props;
-        this.props.stopped = true;                                  // Set `stopped` to true before the actual close to give plugins a chance to
-                                                                    // check the property in their `onclose` and `onerror` methods.
+        this.props.stopped = true;                                  // Purposefully stopped -- this affects our reconnect logic.
         if( socket && socket.readyState === WebSocket.OPEN ) {
             this.props.socket.close();                              // Close the socket.
         } else if( attemptTimeout !== 0 ) {                         // A connect attempt is currently scheduled.
@@ -388,22 +361,20 @@ class Socket {
     promise = ( data ) => {
         const { promises } = this.props;
         const { messageId } = this.options;
-        const custom = ( wrapped ) => {
+        const custom = ( wrapped ) => {                                         // `wrapped` is the object after enveloping.
             let rv = null;
-            // console.log("Socket.promise.custom",promises,messageId, wrapped,wrapped[ messageId ]);//TODO RM
-            if( wrapped[ messageId ] ) {
-                rv = new Promise( ( resolve, reject ) => {
+            if( wrapped[ messageId ] ) {                                        // Must have a `message-id` field for Promise to work.
+                rv = new Promise( ( resolve, reject ) => {                      // Create a new promise and remember it internally.
                     promises[ wrapped[ messageId ] ] = { resolve, reject };
                 } );
             } else {
-                rv = new Promise( ( resolve, reject ) => {
+                rv = new Promise( ( resolve, reject ) => {                      // No `message-id` field is a Promise that will reject.
                     setTimeout( () => {
                         reject( new Error( "Enveloped message did not have an appropriate `message-id`" ) );
                     }, 200 );
                 } );
             }
-            // console.log("Socket.promise.custom",promises,this.props.promises);//TODO RM
-            return rv;
+            return rv;                                                          // This return value is returned to the caller.
         }
         return this.funcs.send( data, custom );
     }
