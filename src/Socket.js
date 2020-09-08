@@ -220,7 +220,7 @@ class Socket {
                     delete promises[ decoded[ messageId ] ];
                     promise.resolve( unwrapped );
                 } else {
-                    this.props.events.trigger( EVENT_DATA, unwrapped ); // TODO Replace unwrapped with a Socket~Event.
+                    this.props.events.trigger( EVENT_DATA, { ...this.props.eventProps, data : unwrapped } );
                 }
             },
 
@@ -286,7 +286,7 @@ class Socket {
                     this.props.attemptTimeout = 0;                                          // Reset attempt timeout to 0.
                     this.connect();
                 }, retryTimeout );
-                this.props.events.trigger( EVENT_SCHEDULED, retryTimeout ); // TODO Change retryTimeout to Socket~Event type.
+                this.props.events.trigger( EVENT_SCHEDULED, { ...this.props.eventProps, scheduled : retryTimeout } );
             }
         };
         // gone is called on `onclose` or `onerror`.
@@ -298,14 +298,14 @@ class Socket {
                 delete socket.onopen;
                 delete socket.onmessage;
                 this.props.socket = null;
-                this.props.events.trigger( EVENT_DISCONNECT, null ); // TODO Replace `null` with Socket~Event.
+                this.props.events.trigger( EVENT_DISCONNECT, { ...this.props.eventProps } );
                 schedule();
             }
         };
         //
         // Our regular connect logic.
         let { attemptTimeout, socket } = this.props;
-        if( attemptTimeout === 0 && socket === null ) {                     // No scheduled attempt, & no socket.
+        if( attemptTimeout === 0 && socket === null ) {                     // No scheduled attempt & no socket.
             this.props.stopped = false;                                     // No longer stopped.
             //
             socket = new WebSocket( this.options.uriProvider( this.props.attempts ) );          // Create underlying WebSocket instance.
@@ -314,14 +314,14 @@ class Socket {
             //
             socket.onclose = gone;
             socket.onerror = gone;
-            socket.onopen = event => {
+            socket.onopen = () => {
                 this.props.attempts = 0;                                    // Reset our attempt counter.
                 this.options.retryProvider( 0 );                            // Reset providers by calling with attempts=0
                 this.options.uriProvider( 0 );
                 if( this.props.stopped === true ) {                         // stop() was called after connect() but before 
                     this.stop();                                            // the connection was completed.
                 } else {
-                    this.props.events.trigger( EVENT_CONNECT, event );      // TODO Replace with Socket~Event type.
+                    this.props.events.trigger( EVENT_CONNECT, { ...this.props.eventProps } );
                     //
                     while( this.props.pending.length > 0 ) {                // Send pending messages if any.
                         socket.send( this.props.pending.shift() );
